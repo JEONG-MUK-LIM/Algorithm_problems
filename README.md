@@ -1,2 +1,2 @@
 # Algorithm_problems
-Algorithm problems and solutions
+어려웠다고 느낀 문제들
