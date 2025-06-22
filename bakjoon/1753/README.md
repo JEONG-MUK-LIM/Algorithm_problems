@@ -65,4 +65,35 @@ set.begin()은 항상 가장 작은 값을 가리키기에 우선순위 큐처�
 
 아주 최악의 상황이 아니라면 그냥 우선순위 큐를 쓰는 게 더 효율적일 수 있다.
 
+set을 쓰는 코드는 다음과 같다.
+
+```
+#include <set>
+#include <vector>
+using namespace std;
+
+vector<int> dijkstra(int start, int V, const vector<vector<pair<int, int>>>& graph) {
+    vector<int> dist(V+1, 1e9);
+    set<pair<int, int>> s; // (거리, 정점)
+    dist[start] = 0;
+    s.insert({0, start});
+
+    while (!s.empty()) {
+        auto [curDist, u] = *s.begin();
+        s.erase(s.begin());
+
+        for (auto [v, w] : graph[u]) {
+            if (dist[v] > curDist + w) {
+                if (dist[v] != 1e9) {
+                    s.erase({dist[v], v}); // 기존 값 제거 (Decrease Key)
+                }
+                dist[v] = curDist + w;
+                s.insert({dist[v], v});
+            }
+        }
+    }
+    return dist;
+}
+```
+
 공간복잡도는 o(E+V)
