@@ -41,11 +41,11 @@ find 함수에서 최솟값을 구하는 경우와 구간합을 구하는 경우
 
 l,r(내가 찾고 싶은 영역)
 
-(l < start , r > end) 
+(l < start || r > end) 
 
 노드번호가 담당하는 영역과 완전히 l,r이 일치하지 않으면 0을 리턴한다.
 
-(l <= start, end <= r)
+(l >= start && end <= r)
 
 해당 노드번호가 담당하는 영역에서 l,r이 완전히 겹치는 상황이면(l,r이 더 넓음)
 
@@ -60,11 +60,13 @@ update의 경우 파라미터는 node,start, end, idx, val
 
 값을 바꾸려는 원소의 인덱스 값이 해당 노드의 영역에 포함되어 있지 않으면 함수를 리턴
 
-start와 end가 같다면 해당 노드의 값을 바꿔주고, 그외 start와 end사이 idx가 어딘가에 있는 상황이라면 update(왼쪽), update(오른쪽)해주고 segment[node] = segment[2*node] + segment[2*node + 1]로 값을 수정한다.
+start와 end가 같다면 해당 노드의 값을 바꿔주고, start와 end사이 idx가 어딘가에 있는 상황이라면 update(왼쪽), update(오른쪽)해주고 segment[node] = segment[2*node] + segment[2*node + 1]로 값을 수정한다.
+
+이후 segment[node]에 할당하는 연산이 스택에 쌓여 리프노드부터 모든 조상노드들의 값을 수정
 
 ## 복잡도
 
-build: 등비수열 공식 n*(1-(1/2) ^ 2)/ (1-(1/2)^2) = 2n
+build: 등비수열 공식 n*(1-(1/2) ^ inf)/ (1-(1/2)) = 2n
 
 최대 2n개의 노드를 생성하므로 o(n)
 
